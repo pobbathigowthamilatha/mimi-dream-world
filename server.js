@@ -524,6 +524,11 @@ function requestHandler(req, res) {
 
         fs.stat(filePath, (err, stats) => {
             if (err || !stats.isFile()) {
+                if (pathname === '/favicon.ico') {
+                    res.writeHead(204, { 'Content-Type': 'image/x-icon' });
+                    res.end();
+                    return;
+                }
                 res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
                 res.end('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found on Mimi’s Moon</h1><p><a href="/">Return to the Moon</a></p></body></html>');
                 return;
@@ -532,10 +537,17 @@ function requestHandler(req, res) {
             const ext = path.extname(filePath).toLowerCase();
             const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
+            let cacheControl = 'public, max-age=120, must-revalidate';
+            if (ext === '.html') {
+                cacheControl = 'no-cache';
+            } else if (['.png', '.jpg', '.jpeg', '.webp', '.svg', '.mp3', '.wav', '.ico'].includes(ext)) {
+                cacheControl = 'public, max-age=86400';
+            }
+
             res.writeHead(200, {
                 'Content-Type': contentType,
                 'Content-Length': stats.size,
-                'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600'
+                'Cache-Control': cacheControl
             });
 
             if (req.method === 'HEAD') {
