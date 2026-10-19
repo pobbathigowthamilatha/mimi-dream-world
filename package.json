@@ -2,7 +2,7 @@
   "name": "mimi-dream-world",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "server.js",
   "directories": {
     "lib": "lib"
   },
