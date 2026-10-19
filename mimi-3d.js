@@ -159,14 +159,14 @@
         });
 
         const noseMaterial = new THREE.MeshStandardMaterial({
-            color: 0xe89eb6,
-            roughness: 0.45,
+            color: 0xdf6b8d,
+            roughness: 0.35,
             metalness: 0.05
         });
 
         const mouthMaterial = new THREE.MeshStandardMaterial({
-            color: 0x934e6e,
-            roughness: 0.5,
+            color: 0x6a2c49,
+            roughness: 0.35,
             metalness: 0.05
         });
 
@@ -318,23 +318,23 @@
         faceGroup.add(rightSleepingEye);
 
         // 5. Tiny Cute Button Nose
-        const noseGeo = new THREE.SphereGeometry(0.042, 16, 14);
-        noseGeo.scale(1.1, 0.85, 0.8);
+        const noseGeo = new THREE.SphereGeometry(0.046, 18, 14);
+        noseGeo.scale(1.15, 0.88, 0.85);
         noseMesh = new THREE.Mesh(noseGeo, noseMaterial);
-        noseMesh.position.set(0, -0.04, 1.01);
+        noseMesh.position.set(0, -0.04, 1.018);
         faceGroup.add(noseMesh);
 
         // 6. Gentle Smiling Mouth (Cat/Bunny "ω" curve)
         const smileCurve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(-0.08, 0.015, 0),
-            new THREE.Vector3(-0.04, -0.025, 0.008),
-            new THREE.Vector3(0, -0.012, 0.012),
-            new THREE.Vector3(0.04, -0.025, 0.008),
-            new THREE.Vector3(0.08, 0.015, 0)
+            new THREE.Vector3(-0.085, 0.016, 0),
+            new THREE.Vector3(-0.042, -0.026, 0.008),
+            new THREE.Vector3(0, -0.012, 0.014),
+            new THREE.Vector3(0.042, -0.026, 0.008),
+            new THREE.Vector3(0.085, 0.016, 0)
         ]);
-        const smileGeo = new THREE.TubeGeometry(smileCurve, 18, 0.016, 8, false);
+        const smileGeo = new THREE.TubeGeometry(smileCurve, 20, 0.018, 8, false);
         mouthMesh = new THREE.Mesh(smileGeo, mouthMaterial);
-        mouthMesh.position.set(0, -0.16, 0.96);
+        mouthMesh.position.set(0, -0.16, 0.985);
         faceGroup.add(mouthMesh);
 
         // 7. Rosy Blushing Cheeks
@@ -917,6 +917,16 @@
             if (loadingBadge) loadingBadge.hidden = true;
             canvas.classList.add('is-ready');
             isInitialized = true;
+
+            // Expose controller for verification and testing
+            window.__MIMI_3D__ = {
+                triggerTwinkle,
+                triggerBounce,
+                triggerSlumber,
+                triggerReset,
+                isInitialized: () => isInitialized,
+                getScene: () => scene
+            };
 
             // Start loop if in viewport
             startRendering();
