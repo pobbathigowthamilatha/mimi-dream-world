@@ -1,7 +1,12 @@
 /**
  * Mimi's Dream World — Tier 3 Interactive 3D Character
- * Uses Three.js with lazy loading, WebGL detection, reduced-motion support,
- * custom procedural stylized character geometry, and interactive controls.
+ * Enhanced expressive procedural character featuring:
+ * - Large expressive galaxy-violet eyes with multi-layer starlight catchlights
+ * - Cute tiny nose and sweet gentle smiling mouth
+ * - Rosy blushing cheeks and glowing golden cheek stars
+ * - Soft, fluffy, rounded body proportions with floppy ears, front paws, feet, and tail
+ * - Smooth natural blinking, organic breathing, pointer head-tracking, and bouncy squish animations
+ * - Perfect anatomical facial alignment, WebGL fallback, and reduced-motion accessibility.
  */
 
 (function () {
@@ -16,19 +21,33 @@
     // Model components
     let mimiRoot = null;
     let mimiBodyGroup = null;
+    let headGroup = null;
+    let faceGroup = null;
+    let bodyMesh = null;
+    let tailMesh = null;
     let leftEar = null;
     let rightEar = null;
     let leftEye = null;
     let rightEye = null;
+    let leftSleepingEye = null;
+    let rightSleepingEye = null;
+    let noseMesh = null;
+    let mouthMesh = null;
     let leftCheekStar = null;
     let rightCheekStar = null;
+    let leftBlush = null;
+    let rightBlush = null;
+    let leftArm = null;
+    let rightArm = null;
+    let leftFoot = null;
+    let rightFoot = null;
     let crownStar = null;
     let stardustParticles = null;
     let keyLight = null;
     let ambientLight = null;
     let rimLight = null;
 
-    // Interaction state
+    // Interaction & Animation state
     let isDragging = false;
     let previousPointerPosition = { x: 0, y: 0 };
     let targetRotationX = 0.05;
@@ -37,10 +56,12 @@
     let currentRotationY = 0;
     let pointerTarget = { x: 0, y: 0 };
     let currentPointer = { x: 0, y: 0 };
-    let activeAction = null; // 'bounce', 'twinkle', 'slumber'
+    let activeAction = null; // 'bounce', 'twinkle'
     let actionStartTime = 0;
-    let blinkTimer = 0;
     let isBlinking = false;
+    let blinkStartTime = 0;
+    let blinkDuration = 160;
+    let nextBlinkTime = 0;
     let isSleepy = false;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -82,19 +103,27 @@
         mimiBodyGroup = new THREE.Group();
         mimiRoot.add(mimiBodyGroup);
 
-        // Materials with dreamy palette
+        // --- Materials with Cozy Dream Palette ---
         const puffMaterial = new THREE.MeshStandardMaterial({
-            color: 0xfcf8f2,
+            color: 0xfdfaf5,
             roughness: 0.65,
-            metalness: 0.04,
-            emissive: 0x1e1828,
+            metalness: 0.02,
+            emissive: 0x1f192b,
             emissiveIntensity: 0.12
         });
 
         const innerEarMaterial = new THREE.MeshStandardMaterial({
-            color: 0xf6c6d5,
-            roughness: 0.75,
+            color: 0xf8c0d2,
+            roughness: 0.72,
             metalness: 0.02
+        });
+
+        const blushMaterial = new THREE.MeshStandardMaterial({
+            color: 0xfda8b8,
+            roughness: 0.85,
+            metalness: 0.0,
+            transparent: true,
+            opacity: 0.62
         });
 
         const starMaterial = new THREE.MeshStandardMaterial({
@@ -105,126 +134,280 @@
             metalness: 0.25
         });
 
-        const eyeMaterial = new THREE.MeshStandardMaterial({
-            color: 0x2e1d4e,
-            roughness: 0.15,
-            metalness: 0.1
+        const eyeBaseMaterial = new THREE.MeshStandardMaterial({
+            color: 0x22123b,
+            roughness: 0.25,
+            metalness: 0.08
+        });
+
+        const irisMaterial = new THREE.MeshStandardMaterial({
+            color: 0x7638ad,
+            emissive: 0x3f1566,
+            emissiveIntensity: 0.45,
+            roughness: 0.18,
+            metalness: 0.05
+        });
+
+        const pupilMaterial = new THREE.MeshStandardMaterial({
+            color: 0x140826,
+            roughness: 0.12,
+            metalness: 0.05
         });
 
         const catchlightMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff
         });
 
-        // 1. Mimi's Round Dream Puff Body
-        const bodyGeo = new THREE.SphereGeometry(1.0, 32, 28);
-        bodyGeo.scale(1.08, 0.98, 1.02);
-        const bodyMesh = new THREE.Mesh(bodyGeo, puffMaterial);
-        bodyMesh.position.y = 0.95;
+        const noseMaterial = new THREE.MeshStandardMaterial({
+            color: 0xe89eb6,
+            roughness: 0.45,
+            metalness: 0.05
+        });
+
+        const mouthMaterial = new THREE.MeshStandardMaterial({
+            color: 0x934e6e,
+            roughness: 0.5,
+            metalness: 0.05
+        });
+
+        const sleepingEyeMaterial = new THREE.MeshStandardMaterial({
+            color: 0x4e235f,
+            roughness: 0.45,
+            metalness: 0.05
+        });
+
+        // 1. Soft Fluffy Body (pear/puff shape)
+        const bodyGeo = new THREE.SphereGeometry(0.92, 32, 28);
+        bodyGeo.scale(1.08, 0.96, 1.05);
+        bodyMesh = new THREE.Mesh(bodyGeo, puffMaterial);
+        bodyMesh.position.set(0, 0.64, 0);
         bodyMesh.castShadow = true;
         bodyMesh.receiveShadow = true;
         mimiBodyGroup.add(bodyMesh);
 
-        // 2. Floppy Bunny Ears
+        // Fluffy Pom-Pom Tail at the back
+        const tailGeo = new THREE.SphereGeometry(0.28, 20, 16);
+        tailGeo.scale(1.0, 0.95, 1.1);
+        tailMesh = new THREE.Mesh(tailGeo, puffMaterial);
+        tailMesh.position.set(0, 0.52, -0.84);
+        tailMesh.castShadow = true;
+        mimiBodyGroup.add(tailMesh);
+
+        // 2. Head Group & Facial Alignment Hierarchy
+        headGroup = new THREE.Group();
+        headGroup.position.set(0, 1.32, 0.05);
+        mimiBodyGroup.add(headGroup);
+
+        const headGeo = new THREE.SphereGeometry(0.86, 32, 28);
+        headGeo.scale(1.18, 1.04, 1.08);
+        const headMesh = new THREE.Mesh(headGeo, puffMaterial);
+        headMesh.castShadow = true;
+        headMesh.receiveShadow = true;
+        headGroup.add(headMesh);
+
+        // Face Group holds all facial features so they stay 100% anatomically locked
+        faceGroup = new THREE.Group();
+        headGroup.add(faceGroup);
+
+        // 3. Floppy Bunny Ears (attached to headGroup)
         function createEar(isRight) {
             const earGroup = new THREE.Group();
-            const earGeo = new THREE.SphereGeometry(0.38, 24, 20);
-            earGeo.scale(0.7, 1.9, 0.45);
+
+            const earGeo = new THREE.SphereGeometry(0.36, 24, 20);
+            earGeo.scale(0.72, 2.1, 0.45);
             const earMesh = new THREE.Mesh(earGeo, puffMaterial);
-            earMesh.position.y = 0.45;
+            earMesh.position.y = 0.55;
             earMesh.castShadow = true;
             earGroup.add(earMesh);
 
-            // Inner ear blush
-            const innerGeo = new THREE.SphereGeometry(0.3, 20, 16);
-            innerGeo.scale(0.55, 1.5, 0.25);
+            const innerGeo = new THREE.SphereGeometry(0.28, 20, 16);
+            innerGeo.scale(0.55, 1.7, 0.22);
             const innerMesh = new THREE.Mesh(innerGeo, innerEarMaterial);
-            innerMesh.position.set(0, 0.45, 0.12);
+            innerMesh.position.set(0, 0.55, 0.12);
             earGroup.add(innerMesh);
 
-            // Flop angle
             const sign = isRight ? 1 : -1;
-            earGroup.position.set(sign * 0.72, 1.75, -0.05);
-            earGroup.rotation.z = sign * -0.52;
-            earGroup.rotation.x = -0.15;
-            earGroup.rotation.y = sign * 0.15;
+            earGroup.position.set(sign * 0.68, 0.62, -0.05);
+            earGroup.rotation.z = sign * -0.62;
+            earGroup.rotation.x = -0.16;
+            earGroup.rotation.y = sign * 0.18;
             return earGroup;
         }
 
         leftEar = createEar(false);
         rightEar = createEar(true);
-        mimiBodyGroup.add(leftEar);
-        mimiBodyGroup.add(rightEar);
+        headGroup.add(leftEar);
+        headGroup.add(rightEar);
 
-        // 3. Galaxy-Violet Eyes with Starlight Catchlights
+        // 4. Large Expressive Galaxy-Violet Eyes with Multi-Catchlights
         function createEye(isRight) {
             const eyeGroup = new THREE.Group();
-            const eyeGeo = new THREE.SphereGeometry(0.165, 24, 20);
-            eyeGeo.scale(0.9, 1.15, 0.6);
-            const eyeMesh = new THREE.Mesh(eyeGeo, eyeMaterial);
-            eyeGroup.add(eyeMesh);
 
-            // Catchlight (upper highlight)
-            const catchlightGeo = new THREE.SphereGeometry(0.045, 12, 12);
-            const catchlightMesh = new THREE.Mesh(catchlightGeo, catchlightMaterial);
-            catchlightMesh.position.set(0.04, 0.05, 0.1);
-            eyeGroup.add(catchlightMesh);
+            // Dark violet sclera base
+            const baseGeo = new THREE.SphereGeometry(0.19, 24, 20);
+            baseGeo.scale(0.92, 1.25, 0.52);
+            const baseMesh = new THREE.Mesh(baseGeo, eyeBaseMaterial);
+            eyeGroup.add(baseMesh);
 
-            // Tiny secondary catchlight
-            const catchlightGeo2 = new THREE.SphereGeometry(0.025, 8, 8);
-            const catchlightMesh2 = new THREE.Mesh(catchlightGeo2, catchlightMaterial);
-            catchlightMesh2.position.set(-0.04, -0.04, 0.1);
-            eyeGroup.add(catchlightMesh2);
+            // Vibrant galaxy-violet iris
+            const irisGeo = new THREE.SphereGeometry(0.165, 20, 18);
+            irisGeo.scale(0.86, 1.12, 0.38);
+            const irisMesh = new THREE.Mesh(irisGeo, irisMaterial);
+            irisMesh.position.set(0, -0.02, 0.06);
+            eyeGroup.add(irisMesh);
+
+            // Deep night pupil
+            const pupilGeo = new THREE.SphereGeometry(0.095, 16, 14);
+            pupilGeo.scale(0.82, 0.98, 0.32);
+            const pupilMesh = new THREE.Mesh(pupilGeo, pupilMaterial);
+            pupilMesh.position.set(0, -0.02, 0.09);
+            eyeGroup.add(pupilMesh);
+
+            // Primary starlight catchlight (large sparkle)
+            const catch1Geo = new THREE.SphereGeometry(0.052, 12, 10);
+            const catch1Mesh = new THREE.Mesh(catch1Geo, catchlightMaterial);
+            catch1Mesh.position.set(0.045, 0.055, 0.12);
+            eyeGroup.add(catch1Mesh);
+
+            // Secondary twinkle catchlight
+            const catch2Geo = new THREE.SphereGeometry(0.028, 10, 8);
+            const catch2Mesh = new THREE.Mesh(catch2Geo, catchlightMaterial);
+            catch2Mesh.position.set(-0.04, -0.045, 0.11);
+            eyeGroup.add(catch2Mesh);
+
+            // Tiny stardust highlight
+            const catch3Geo = new THREE.SphereGeometry(0.018, 8, 8);
+            const catch3Mesh = new THREE.Mesh(catch3Geo, catchlightMaterial);
+            catch3Mesh.position.set(0.05, -0.025, 0.11);
+            eyeGroup.add(catch3Mesh);
 
             const sign = isRight ? 1 : -1;
-            eyeGroup.position.set(sign * 0.38, 1.05, 0.94);
+            eyeGroup.position.set(sign * 0.34, 0.06, 0.90);
             eyeGroup.rotation.y = sign * 0.22;
-            eyeGroup.rotation.x = -0.06;
+            eyeGroup.rotation.x = -0.05;
             return eyeGroup;
         }
 
         leftEye = createEye(false);
         rightEye = createEye(true);
-        mimiBodyGroup.add(leftEye);
-        mimiBodyGroup.add(rightEye);
+        faceGroup.add(leftEye);
+        faceGroup.add(rightEye);
 
-        // 4. Golden Stars on Cheeks
-        const starShape = createStarShape(5, 0.06, 0.13);
+        // Sleeping Eye Arches (^ _ ^) for gentle slumber mode
+        function createSleepingEye(isRight) {
+            const archCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.13, -0.03, 0),
+                new THREE.Vector3(0, 0.05, 0.02),
+                new THREE.Vector3(0.13, -0.03, 0)
+            ]);
+            const archGeo = new THREE.TubeGeometry(archCurve, 16, 0.02, 8, false);
+            const archMesh = new THREE.Mesh(archGeo, sleepingEyeMaterial);
+            const sign = isRight ? 1 : -1;
+            archMesh.position.set(sign * 0.34, 0.06, 0.92);
+            archMesh.rotation.y = sign * 0.22;
+            archMesh.rotation.x = -0.05;
+            archMesh.visible = false;
+            return archMesh;
+        }
+
+        leftSleepingEye = createSleepingEye(false);
+        rightSleepingEye = createSleepingEye(true);
+        faceGroup.add(leftSleepingEye);
+        faceGroup.add(rightSleepingEye);
+
+        // 5. Tiny Cute Button Nose
+        const noseGeo = new THREE.SphereGeometry(0.042, 16, 14);
+        noseGeo.scale(1.1, 0.85, 0.8);
+        noseMesh = new THREE.Mesh(noseGeo, noseMaterial);
+        noseMesh.position.set(0, -0.04, 1.01);
+        faceGroup.add(noseMesh);
+
+        // 6. Gentle Smiling Mouth (Cat/Bunny "ω" curve)
+        const smileCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.08, 0.015, 0),
+            new THREE.Vector3(-0.04, -0.025, 0.008),
+            new THREE.Vector3(0, -0.012, 0.012),
+            new THREE.Vector3(0.04, -0.025, 0.008),
+            new THREE.Vector3(0.08, 0.015, 0)
+        ]);
+        const smileGeo = new THREE.TubeGeometry(smileCurve, 18, 0.016, 8, false);
+        mouthMesh = new THREE.Mesh(smileGeo, mouthMaterial);
+        mouthMesh.position.set(0, -0.16, 0.96);
+        faceGroup.add(mouthMesh);
+
+        // 7. Rosy Blushing Cheeks
+        const blushGeo = new THREE.SphereGeometry(0.15, 18, 14);
+        blushGeo.scale(1.3, 0.7, 0.3);
+        leftBlush = new THREE.Mesh(blushGeo, blushMaterial);
+        leftBlush.position.set(-0.48, -0.12, 0.82);
+        leftBlush.rotation.set(-0.08, -0.42, 0.1);
+        faceGroup.add(leftBlush);
+
+        rightBlush = new THREE.Mesh(blushGeo, blushMaterial);
+        rightBlush.position.set(0.48, -0.12, 0.82);
+        rightBlush.rotation.set(-0.08, 0.42, -0.1);
+        faceGroup.add(rightBlush);
+
+        // 8. Golden Cheek Stars
+        const starShape = createStarShape(5, 0.065, 0.14);
         const starExtrudeSettings = { depth: 0.03, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.015, bevelThickness: 0.015 };
         const starGeo = new THREE.ExtrudeGeometry(starShape, starExtrudeSettings);
 
         leftCheekStar = new THREE.Mesh(starGeo, starMaterial);
-        leftCheekStar.position.set(-0.62, 0.78, 0.78);
+        leftCheekStar.position.set(-0.52, -0.08, 0.86);
         leftCheekStar.rotation.set(-0.1, -0.42, 0.15);
-        mimiBodyGroup.add(leftCheekStar);
+        faceGroup.add(leftCheekStar);
 
         rightCheekStar = new THREE.Mesh(starGeo, starMaterial);
-        rightCheekStar.position.set(0.62, 0.78, 0.78);
+        rightCheekStar.position.set(0.52, -0.08, 0.86);
         rightCheekStar.rotation.set(-0.1, 0.42, -0.15);
-        mimiBodyGroup.add(rightCheekStar);
+        faceGroup.add(rightCheekStar);
 
-        // 5. Cute Soft Front Paws
-        function createPaw(isRight) {
-            const pawGeo = new THREE.SphereGeometry(0.24, 20, 16);
-            pawGeo.scale(0.85, 0.65, 1.25);
-            const pawMesh = new THREE.Mesh(pawGeo, puffMaterial);
+        // 9. Cute Front Arms/Paws & Small Feet
+        function createArm(isRight) {
+            const armGroup = new THREE.Group();
+            const armGeo = new THREE.SphereGeometry(0.18, 18, 16);
+            armGeo.scale(0.8, 1.25, 0.85);
+            const armMesh = new THREE.Mesh(armGeo, puffMaterial);
+            armMesh.castShadow = true;
+            armGroup.add(armMesh);
+
             const sign = isRight ? 1 : -1;
-            pawMesh.position.set(sign * 0.38, 0.22, 0.82);
-            pawMesh.rotation.x = 0.1;
-            pawMesh.rotation.y = sign * -0.15;
-            pawMesh.castShadow = true;
-            return pawMesh;
+            armGroup.position.set(sign * 0.42, 0.72, 0.68);
+            armGroup.rotation.set(0.35, sign * -0.28, sign * -0.18);
+            return armGroup;
         }
-        mimiBodyGroup.add(createPaw(false));
-        mimiBodyGroup.add(createPaw(true));
 
-        // 6. Floating Crown Star (Hovering gently above Mimi's head)
+        leftArm = createArm(false);
+        rightArm = createArm(true);
+        mimiBodyGroup.add(leftArm);
+        mimiBodyGroup.add(rightArm);
+
+        function createFoot(isRight) {
+            const footGeo = new THREE.SphereGeometry(0.22, 18, 16);
+            footGeo.scale(0.9, 0.6, 1.35);
+            const footMesh = new THREE.Mesh(footGeo, puffMaterial);
+            footMesh.castShadow = true;
+
+            const sign = isRight ? 1 : -1;
+            footMesh.position.set(sign * 0.42, 0.16, 0.52);
+            footMesh.rotation.set(0.08, sign * 0.18, 0);
+            return footMesh;
+        }
+
+        leftFoot = createFoot(false);
+        rightFoot = createFoot(true);
+        mimiBodyGroup.add(leftFoot);
+        mimiBodyGroup.add(rightFoot);
+
+        // 10. Floating Crown Star (hovering gently above head)
         const crownShape = createStarShape(5, 0.09, 0.2);
         const crownGeo = new THREE.ExtrudeGeometry(crownShape, { depth: 0.04, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02 });
         crownStar = new THREE.Mesh(crownGeo, starMaterial);
-        crownStar.position.set(0, 2.25, 0);
+        crownStar.position.set(0, 2.30, 0);
         mimiBodyGroup.add(crownStar);
 
-        // 7. Moon Cloud Pedestal
+        // 11. Moon Cloud Pedestal
         const cloudGroup = new THREE.Group();
         const cloudMat = new THREE.MeshStandardMaterial({
             color: 0xded8ee,
@@ -265,8 +448,8 @@
 
         mimiRoot.add(cloudGroup);
 
-        // 8. Swirling Floating Stardust Particles
-        const particleCount = 75;
+        // 12. Swirling Floating Stardust Particles
+        const particleCount = 80;
         const particleGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -275,13 +458,13 @@
             new THREE.Color(0xf6d47d), // gold
             new THREE.Color(0xf3b5cf), // rose
             new THREE.Color(0xd8c5ff), // lilac
-            new THREE.Color(0xa8e8ef)  // starlight cyan
+            new THREE.Color(0xa8e8ef)  // cyan
         ];
 
         for (let i = 0; i < particleCount; i++) {
             const angle = Math.random() * Math.PI * 2;
-            const radius = 1.3 + Math.random() * 1.5;
-            const y = 0.2 + Math.random() * 2.4;
+            const radius = 1.3 + Math.random() * 1.6;
+            const y = 0.2 + Math.random() * 2.5;
 
             positions[i * 3] = Math.cos(angle) * radius;
             positions[i * 3 + 1] = y;
@@ -310,7 +493,7 @@
     }
 
     function setupLights() {
-        ambientLight = new THREE.AmbientLight(0x766c9a, 1.4);
+        ambientLight = new THREE.AmbientLight(0x766c9a, 1.45);
         scene.add(ambientLight);
 
         keyLight = new THREE.DirectionalLight(0xfff3db, 2.2);
@@ -342,7 +525,7 @@
             rimLight.color.setHex(0xc7a9d9);
         } else {
             ambientLight.color.setHex(0x766c9a);
-            ambientLight.intensity = 1.4;
+            ambientLight.intensity = 1.45;
             keyLight.color.setHex(0xfff3db);
             keyLight.intensity = 2.2;
             rimLight.color.setHex(0xdfa0bd);
@@ -463,14 +646,30 @@
         if (isSleepy) {
             announceAction('Shh… Mimi is resting gently on the moon cloud.');
             if (leftEye && rightEye) {
-                leftEye.scale.set(0.9, 0.15, 0.6);
-                rightEye.scale.set(0.9, 0.15, 0.6);
+                leftEye.visible = false;
+                rightEye.visible = false;
+            }
+            if (leftSleepingEye && rightSleepingEye) {
+                leftSleepingEye.visible = true;
+                rightSleepingEye.visible = true;
+            }
+            if (headGroup) {
+                headGroup.rotation.x = 0.12;
             }
         } else {
             announceAction('Mimi woke up ready to gather more starlight!');
             if (leftEye && rightEye) {
-                leftEye.scale.set(0.9, 1.15, 0.6);
-                rightEye.scale.set(0.9, 1.15, 0.6);
+                leftEye.visible = true;
+                rightEye.visible = true;
+                leftEye.scale.y = 1.0;
+                rightEye.scale.y = 1.0;
+            }
+            if (leftSleepingEye && rightSleepingEye) {
+                leftSleepingEye.visible = false;
+                rightSleepingEye.visible = false;
+            }
+            if (headGroup) {
+                headGroup.rotation.x = 0;
             }
         }
     }
@@ -496,32 +695,54 @@
         currentRotationX += (targetRotationX - currentRotationX) * lerpFactor;
         currentRotationY += (targetRotationY - currentRotationY) * lerpFactor;
 
-        // Smooth pointer tracking for subtle head tilt
+        // Pointer tracking for subtle responsive head-gaze
         currentPointer.x += (pointerTarget.x - currentPointer.x) * 0.05;
         currentPointer.y += (pointerTarget.y - currentPointer.y) * 0.05;
 
         if (mimiRoot) {
-            mimiRoot.rotation.x = currentRotationX + currentPointer.y * 0.1;
-            mimiRoot.rotation.y = currentRotationY + currentPointer.x * 0.15;
+            mimiRoot.rotation.x = currentRotationX + currentPointer.y * 0.08;
+            mimiRoot.rotation.y = currentRotationY + currentPointer.x * 0.12;
         }
 
-        // Subtle Idle Breathing & Animation (disabled if prefersReducedMotion)
+        // Subtle Idle Breathing, Blinking & Animations (disabled if reduced-motion)
         if (!prefersReducedMotion.matches && mimiBodyGroup) {
-            // Gentle floating bob
-            const breath = Math.sin(time * 2.0);
-            mimiBodyGroup.position.y = breath * 0.05;
+            const breathCycle = isSleepy ? time * 1.3 : time * 2.2;
+            const breath = Math.sin(breathCycle);
 
-            // Ear sway
-            if (leftEar && rightEar) {
-                const earSway = Math.cos(time * 2.0) * 0.06;
-                leftEar.rotation.z = -0.52 + earSway;
-                rightEar.rotation.z = 0.52 - earSway;
+            // Gentle organic breathing with squash & stretch
+            if (bodyMesh) {
+                bodyMesh.scale.set(
+                    1.08 - breath * 0.015,
+                    0.96 + breath * 0.025,
+                    1.05 - breath * 0.015
+                );
             }
 
-            // Crown star floating and spinning
+            // Head bobs smoothly and tilts to follow gaze
+            if (headGroup) {
+                headGroup.position.y = 1.32 + Math.sin(breathCycle - 0.3) * 0.022;
+                if (!isSleepy) {
+                    headGroup.rotation.y = currentPointer.x * 0.18;
+                    headGroup.rotation.x = -currentPointer.y * 0.12;
+                }
+            }
+
+            // Floppy ears sway with gentle soft-body inertia
+            if (leftEar && rightEar) {
+                const earSway = Math.cos(breathCycle) * 0.045;
+                leftEar.rotation.z = -0.62 + earSway;
+                rightEar.rotation.z = 0.62 - earSway;
+            }
+
+            // Fluffy tail wiggles gently
+            if (tailMesh) {
+                tailMesh.rotation.y = Math.sin(time * 2.4) * 0.14;
+            }
+
+            // Crown star floating and slowly spinning
             if (crownStar) {
-                crownStar.position.y = 2.25 + Math.sin(time * 3.0) * 0.06;
-                crownStar.rotation.z = time * 0.8;
+                crownStar.position.y = 2.30 + Math.sin(time * 3.0) * 0.06;
+                crownStar.rotation.z = time * 0.75;
             }
 
             // Stardust particle rotation
@@ -529,49 +750,98 @@
                 stardustParticles.rotation.y = time * 0.12;
             }
 
-            // Cheek star pulse
+            // Pulsating glowing cheek stars
             if (leftCheekStar && rightCheekStar) {
-                const pulse = 0.75 + Math.sin(time * 3.0) * 0.25;
+                const pulse = 0.8 + Math.sin(time * 3.2) * 0.35;
                 leftCheekStar.material.emissiveIntensity = pulse;
                 rightCheekStar.material.emissiveIntensity = pulse;
             }
 
-            // Periodic Eye Blink
+            // Natural Organic Eye Blinking (smooth eyelid sine curve)
             if (!isSleepy && leftEye && rightEye) {
-                if (now > blinkTimer) {
+                if (!isBlinking && now > nextBlinkTime) {
                     isBlinking = true;
-                    leftEye.scale.set(0.9, 0.1, 0.6);
-                    rightEye.scale.set(0.9, 0.1, 0.6);
-                    setTimeout(() => {
-                        if (!isSleepy && leftEye && rightEye) {
-                            leftEye.scale.set(0.9, 1.15, 0.6);
-                            rightEye.scale.set(0.9, 1.15, 0.6);
-                        }
+                    blinkStartTime = now;
+                    blinkDuration = 160;
+                }
+
+                if (isBlinking) {
+                    const elapsed = now - blinkStartTime;
+                    if (elapsed < blinkDuration) {
+                        const progress = elapsed / blinkDuration;
+                        // Smooth sine curve: dips to 0.06 at halfway mark then springs open
+                        const eyeScaleY = 1.0 - Math.sin(progress * Math.PI) * 0.94;
+                        leftEye.scale.y = eyeScaleY;
+                        rightEye.scale.y = eyeScaleY;
+                    } else {
+                        leftEye.scale.y = 1.0;
+                        rightEye.scale.y = 1.0;
                         isBlinking = false;
-                    }, 140);
-                    blinkTimer = now + 3500 + Math.random() * 4000;
+                        nextBlinkTime = now + 3200 + Math.random() * 4000;
+                    }
                 }
             }
 
             // Handle active special actions
             if (activeAction === 'twinkle') {
                 const elapsed = (now - actionStartTime) * 0.001;
-                if (elapsed < 1.2) {
-                    const flare = Math.sin(elapsed * Math.PI) * 2.5;
-                    leftCheekStar.material.emissiveIntensity = 0.8 + flare;
-                    rightCheekStar.material.emissiveIntensity = 0.8 + flare;
+                if (elapsed < 1.3) {
+                    const flare = Math.sin(elapsed / 1.3 * Math.PI) * 2.8;
+                    leftCheekStar.material.emissiveIntensity = 0.9 + flare;
+                    rightCheekStar.material.emissiveIntensity = 0.9 + flare;
+                    crownStar.material.emissiveIntensity = 0.9 + flare * 1.5;
                     crownStar.rotation.z = time * 6.0;
                 } else {
                     activeAction = null;
                 }
             } else if (activeAction === 'bounce') {
                 const elapsed = (now - actionStartTime) * 0.001;
-                if (elapsed < 0.65) {
-                    const jump = Math.sin(elapsed / 0.65 * Math.PI) * 0.45;
-                    mimiBodyGroup.position.y = jump;
-                    leftEar.rotation.z = -0.52 - jump * 0.8;
-                    rightEar.rotation.z = 0.52 + jump * 0.8;
+                const duration = 0.85;
+                if (elapsed < duration) {
+                    const t = elapsed / duration;
+                    // Phase 1: Squash anticipation (0 to 0.15)
+                    if (t < 0.15) {
+                        const p = t / 0.15;
+                        mimiBodyGroup.position.y = -p * 0.12;
+                        mimiBodyGroup.scale.set(1 + p * 0.14, 1 - p * 0.18, 1 + p * 0.14);
+                    }
+                    // Phase 2: Main soaring jump (0.15 to 0.70)
+                    else if (t < 0.70) {
+                        const jumpProgress = (t - 0.15) / 0.55;
+                        const jumpHeight = Math.sin(jumpProgress * Math.PI) * 0.58;
+                        mimiBodyGroup.position.y = jumpHeight;
+                        const stretch = Math.sin(jumpProgress * Math.PI) * 0.16;
+                        mimiBodyGroup.scale.set(1 - stretch * 0.5, 1 + stretch, 1 - stretch * 0.5);
+
+                        // Ears flap back with delight
+                        if (leftEar && rightEar) {
+                            leftEar.rotation.z = -0.62 - jumpHeight * 0.65;
+                            rightEar.rotation.z = 0.62 + jumpHeight * 0.65;
+                        }
+                        // Excited tail wag
+                        if (tailMesh) {
+                            tailMesh.rotation.y = Math.sin(jumpProgress * Math.PI * 6) * 0.35;
+                        }
+                        // Happy paw gesture
+                        if (leftArm && rightArm) {
+                            leftArm.rotation.x = 0.35 - jumpHeight * 0.55;
+                            rightArm.rotation.x = 0.35 - jumpHeight * 0.55;
+                        }
+                    }
+                    // Phase 3: Elastic landing squash & settle (0.70 to 1.0)
+                    else {
+                        const landProgress = (t - 0.70) / 0.30;
+                        const settle = Math.sin(landProgress * Math.PI) * Math.exp(-landProgress * 3.5);
+                        mimiBodyGroup.position.y = -settle * 0.1;
+                        mimiBodyGroup.scale.set(1 + settle * 0.08, 1 - settle * 0.1, 1 + settle * 0.08);
+                        if (leftEar && rightEar) {
+                            leftEar.rotation.z = -0.62 + settle * 0.2;
+                            rightEar.rotation.z = 0.62 - settle * 0.2;
+                        }
+                    }
                 } else {
+                    mimiBodyGroup.position.y = 0;
+                    mimiBodyGroup.scale.set(1, 1, 1);
                     activeAction = null;
                 }
             }
