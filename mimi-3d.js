@@ -922,8 +922,8 @@
             window.__MIMI_3D__ = {
                 triggerTwinkle,
                 triggerBounce,
-                triggerSlumber,
-                triggerReset,
+                toggleSlumber,
+                resetView,
                 isInitialized: () => isInitialized,
                 getScene: () => scene
             };
