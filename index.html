@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#11152c">
+    <meta name="description" content="Step into Mimi's tiny moon-bedroom, where starlight becomes stories, melodies, and little notes of comfort.">
+    <title>Mimi's Dream Operating System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#home">Skip to Mimi's Moon</a>
+    <div class="ambient-glow ambient-night" aria-hidden="true"></div>
+    <div class="ambient-glow ambient-day" aria-hidden="true"></div>
+    <div class="nightlight" id="nightlight" aria-hidden="true"></div>
+    <div class="sky" aria-hidden="true">
+        <span class="sky-star star-one">✦</span>
+        <span class="sky-star star-two">✧</span>
+        <span class="sky-star star-three">·</span>
+        <span class="sky-star star-four">✦</span>
+        <span class="sky-star star-five">·</span>
+        <span class="sky-star star-six">✧</span>
+        <span class="sky-mote mote-one"></span>
+        <span class="sky-mote mote-two"></span>
+        <span class="sky-mote mote-three"></span>
+        <span class="sky-mote mote-four"></span>
+        <span class="cloud cloud-left"></span>
+        <span class="cloud cloud-right"></span>
+        <span class="moon-window"><span class="window-moon"></span></span>
+        <span class="window-sill"></span>
+    </div>
+
+    <header class="topbar">
+        <a class="logo" href="#home" aria-label="Mimi's Moon, home"><span aria-hidden="true">☾</span> Mimi's Moon</a>
+        <nav aria-label="Main navigation">
+            <a href="#mimi-3d-sanctuary">Mimi 3D</a>
+            <a href="#story">Her story</a>
+            <a href="#creations">Little wonders</a>
+            <a href="#dream-catch">Catch dreams</a>
+            <a href="#guestbook">Guestbook</a>
+        </nav>
+        <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false" aria-label="Enable magical sounds; currently muted" title="Magical sounds are muted">
+            <span class="sound-icon" aria-hidden="true">♫</span><span class="sound-label">Muted</span>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to day mode">
+            <span class="toggle-icon" aria-hidden="true">☀</span><span class="toggle-label">Daydream</span>
+        </button>
+    </header>
+
+    <main id="home">
+        <section class="hero section-wrap" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> MIMI'S DREAM OPERATING SYSTEM <span class="version">v.01</span></p>
+                <p class="status-note"><span aria-hidden="true">✧</span> Currently collecting starlight</p>
+                <h1 id="hero-title">Meet Mimi,<br><em>the Little Dream Puff.</em></h1>
+                <p class="intro">A curious, gentle, slightly shy little puff with floppy ears, galaxy-violet eyes, and a golden star on each cheek. Mimi turns starlight into stories, dreamy melodies, and comforting notes for lonely hearts.</p>
+                <a class="magic-button" href="#story">Enter Mimi's Moon <span aria-hidden="true">↗</span></a>
+                <p class="tiny-note">Made of moonlight, dreams &amp; kindness <span aria-hidden="true">♡</span></p>
+                <aside class="mimi-greeting" id="mimi-greeting" hidden>
+                    <div class="mimi-greeting-body">
+                        <p id="mimi-greeting-text">Mimi saved a little glow for your return.</p>
+                        <button class="greeting-name-btn" id="greeting-name-btn" type="button" aria-label="Tell Mimi your preferred name">Tell Mimi your name ✦</button>
+                    </div>
+                    <button class="greeting-close" id="greeting-close" type="button" aria-label="Dismiss Mimi's greeting">×</button>
+                </aside>
+            </div>
+
+            <div class="hero-scene">
+                <img class="hero-artwork theme-artwork" src="images/scene-background-night.png" data-night-src="images/scene-background-night.png" data-day-src="images/scene-background-day.png" alt="Mimi sitting among moonlit clouds and glowing stars beneath a bright golden star" fetchpriority="high" decoding="async" width="1024" height="559">
+                <span class="cursor-star" aria-hidden="true">✧</span>
+                <button class="secret-star" id="secret-star" type="button" aria-label="A tiny golden star. Click to see Mimi's secret." title="A tiny star seems to be hiding...">✦</button>
+            </div>
+            <a class="scroll-cue" href="#story"><span aria-hidden="true">↓</span> WANDER A LITTLE</a>
+        </section>
+
+        <section class="character-sheet section-wrap" aria-labelledby="character-sheet-title">
+            <div class="character-sheet-heading">
+                <p class="eyebrow">A LITTLE MOON-DWELLER PROFILE</p>
+                <h2 id="character-sheet-title">Meet Mimi <span>— Character Sheet</span></h2>
+            </div>
+            <dl class="character-facts">
+                <div class="character-fact">
+                    <dt><span aria-hidden="true">✦</span> Name</dt>
+                    <dd>Mimi, the Little Dream Puff.</dd>
+                </div>
+                <div class="character-fact">
+                    <dt><span aria-hidden="true">✧</span> What They Are</dt>
+                    <dd>A curious, gentle, slightly shy little puff with floppy ears, galaxy-violet eyes, and golden stars on each cheek.</dd>
+                </div>
+                <div class="character-fact">
+                    <dt><span aria-hidden="true">♫</span> What They Do</dt>
+                    <dd>Creates magical bedtime stories, dreamy melodies, and comforting messages using starlight.</dd>
+                </div>
+                <div class="character-fact">
+                    <dt><span aria-hidden="true">☾</span> Their Story</dt>
+                    <dd>Mimi lives in a tiny bedroom on the Moon and discovers their purpose by helping lonely hearts feel less alone.</dd>
+                </div>
+                <div class="character-fact character-fact-tagline">
+                    <dt><span aria-hidden="true">♡</span> Tagline</dt>
+                    <dd><span class="tagline-placeholder">A tiny light for every lonely heart.</span></dd>
+                </div>
+            </dl>
+        </section>
+
+        <section id="mimi-3d-sanctuary" class="mimi-3d-sanctuary section-wrap" aria-labelledby="mimi-3d-title">
+            <div class="section-heading">
+                <p class="eyebrow">INTERACTIVE 3D SANCTUARY</p>
+                <h2 id="mimi-3d-title">Step closer.<br><em>Meet Mimi in 3D.</em></h2>
+                <p>Drag or swipe to rotate Mimi in real-time moon space. Watch the starlight dance across their cheeks.</p>
+            </div>
+            <div class="mimi-3d-stage">
+                <div class="mimi-3d-canvas-wrap" id="mimi-3d-canvas-wrap" tabindex="0" role="region" aria-label="Interactive 3D view of Mimi. Drag with mouse or swipe with touch to rotate.">
+                    <div class="mimi-3d-loading" id="mimi-3d-loading" role="status" aria-live="polite">
+                        <span class="mimi-3d-spinner" aria-hidden="true">✦</span>
+                        <p>Spinning moonbeams...</p>
+                    </div>
+                    <canvas id="mimi-3d-canvas" class="mimi-3d-canvas" width="600" height="420" aria-label="3D model of Mimi, the little dream puff on a floating cloud pedestal"></canvas>
+                    <div class="mimi-3d-fallback" id="mimi-3d-fallback" hidden>
+                        <div class="mimi-3d-fallback-art">
+                            <img src="images/scene-day.png" alt="Mimi resting softly among glowing stars" width="360" height="240" loading="lazy">
+                        </div>
+                        <p><strong>WebGL is resting quietly in your browser.</strong></p>
+                        <p>Here is Mimi relaxing beneath the moonbeams just for you!</p>
+                    </div>
+                </div>
+                <div class="mimi-3d-controls" role="group" aria-label="Mimi 3D actions">
+                    <button class="dialog-action" id="mimi-3d-twinkle" type="button">Twinkle Stars <span aria-hidden="true">✦</span></button>
+                    <button class="dialog-action" id="mimi-3d-bounce" type="button">Happy Bounce <span aria-hidden="true">♫</span></button>
+                    <button class="dialog-action" id="mimi-3d-slumber" type="button">Moon Nap <span aria-hidden="true">☾</span></button>
+                    <button class="dialog-action dialog-action-ghost" id="mimi-3d-reset" type="button">Center View <span aria-hidden="true">↻</span></button>
+                </div>
+                <p class="mimi-3d-status" id="mimi-3d-status" role="status" aria-live="polite">Mimi is watching the stars drift by.</p>
+                <p class="mimi-3d-hint">Tip: Drag with mouse or touch to rotate Mimi. Buttons trigger special character magic.</p>
+            </div>
+        </section>
+
+        <section id="story" class="story section-wrap" aria-labelledby="story-title">
+            <div class="section-heading">
+                <p class="eyebrow">ORIGIN FILE / 001 — 004</p>
+                <h2 id="story-title">A little life<br><em>with a lot of heart.</em></h2>
+                <p>Follow Mimi from a quiet corner of the Moon to the hearts they help light up.</p>
+            </div>
+            <nav class="story-index" aria-label="Jump to an origin story scene">
+                <a href="#scene-silver"><span>01</span> Silver Nook</a>
+                <a href="#scene-whispers"><span>02</span> Falling Whispers</a>
+                <a href="#scene-workshop"><span>03</span> Secret Workshop</a>
+                <a href="#scene-heart"><span>04</span> Heart of the Moon</a>
+            </nav>
+            <div class="story-path">
+                <article class="story-card" id="scene-silver">
+                    <figure class="story-art story-image nook-art">
+                        <img class="theme-artwork" src="images/scene1.png" data-night-src="images/scene1.png" data-day-src="images/scene1-day.png" alt="Mimi's tiny moon bedroom tucked among starlit clouds" loading="lazy">
+                        <figcaption><span aria-hidden="true">01</span> THE SILVER NOOK</figcaption>
+                    </figure>
+                    <div class="story-copy">
+                        <span class="scene-number">01 — BEFORE THE FIRST DREAM</span>
+                        <h3>The Silver Nook</h3>
+                        <p class="scene-quote">“Before the world learned to dream, the Moon kept its smallest secrets wrapped in velvet silence.”</p>
+                        <p>Inside that hush, Mimi made a tiny bedroom of their own. Surrounded by beautiful stars, they still felt something was missing. Why were they made, and what could one little life do?</p>
+                        <a class="scene-next" href="#scene-whispers">Follow the falling light <span aria-hidden="true">↓</span></a>
+                    </div>
+                </article>
+                <article class="story-card story-card-offset" id="scene-whispers">
+                    <figure class="story-art story-image whispers-art">
+                        <img class="theme-artwork" src="images/scene2.png" data-night-src="images/scene2.png" data-day-src="images/scene2-day.png" alt="Mimi discovering whispers and small floating lights beneath the Moon" loading="lazy">
+                        <figcaption><span aria-hidden="true">02</span> A WHISPER FINDS ITS WAY</figcaption>
+                    </figure>
+                    <div class="story-copy">
+                        <span class="scene-number">02 — A LIGHT ANSWERS</span>
+                        <h3>The Falling Whispers</h3>
+                        <p>One night, a falling star carried the sigh of a lonely child. When Mimi touched its cold light, the golden stars on their cheeks began to glow.</p>
+                        <p>The starlight turned warm and comforting. At last, Mimi understood: they could help someone feel less alone.</p>
+                        <a class="scene-next" href="#scene-workshop">See what Mimi made <span aria-hidden="true">↓</span></a>
+                    </div>
+                </article>
+                <article class="story-card" id="scene-workshop">
+                    <figure class="story-art story-image workshop-art">
+                        <img class="theme-artwork" src="images/scene3.png" data-night-src="images/scene3.png" data-day-src="images/scene3-day.png" alt="Mimi in the secret workshop beneath the Moon arch, with starry keepsakes" loading="lazy">
+                        <figcaption><span aria-hidden="true">03</span> THE SECRET WORKSHOP</figcaption>
+                    </figure>
+                    <div class="story-copy">
+                        <span class="scene-number">03 — THREE LITTLE GIFTS</span>
+                        <h3>The Secret Workshop</h3>
+                        <p>Mimi opened a workshop and made three ways to send a little comfort across the universe: a Storybook that brings tales to life, a Music Box for dreamy melodies, and Floating Light Orbs with kind messages.</p>
+                        <a class="scene-next" href="#creations">Explore the creations <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="story-card story-card-offset" id="scene-heart">
+                    <figure class="story-art story-image heart-art">
+                        <img class="theme-artwork" src="images/scene4.png" data-night-src="images/scene4.png" data-day-src="images/scene4-day.png" alt="Mimi in the heart of the Moon, gazing through its great window at Earth" loading="lazy">
+                        <figcaption><span aria-hidden="true">04</span> KINDNESS CONNECTS US</figcaption>
+                    </figure>
+                    <div class="story-copy">
+                        <span class="scene-number">04 — A LIGHT LEFT BEHIND</span>
+                        <h3>The Heart of the Moon</h3>
+                        <p>One night, new golden stars appeared on the bedroom walls whenever someone found comfort in Mimi's creations. Each one was proof that a little kindness had reached someone.</p>
+                        <p>Mimi saw how every small act connected hearts, even across the universe.</p>
+                        <a class="scene-next" href="#ending">Keep a little light <span aria-hidden="true">↓</span></a>
+                    </div>
+                </article>
+            </div>
+            <aside class="dream-delivery" aria-labelledby="delivery-title">
+                <div class="dream-delivery-copy">
+                    <p class="eyebrow">DREAM DELIVERY ROUTES</p>
+                    <h3 id="delivery-title">A little light on its way</h3>
+                    <p>When a story, song, or glowing note is ready, Mimi sends it along a silver path from the Moon to whoever needs a softer night.</p>
+                </div>
+                <svg class="delivery-map" viewBox="0 0 480 160" role="img" aria-labelledby="delivery-map-title">
+                    <title id="delivery-map-title">A decorative map of starlight traveling from Mimi's Moon to Earth</title>
+                    <path class="delivery-skyline" d="M70 132 H410"></path>
+                    <path class="delivery-route" id="delivery-route" d="M56 86 C 130 18, 198 138, 276 72 S 392 36, 428 98"></path>
+                    <circle class="delivery-moon" cx="48" cy="86" r="18"></circle>
+                    <circle class="delivery-earth" cx="432" cy="102" r="14"></circle>
+                    <text class="delivery-label" x="36" y="124">Moon</text>
+                    <text class="delivery-label" x="412" y="132">Earth</text>
+                    <circle class="delivery-parcel" id="delivery-parcel" cx="56" cy="86" r="6"></circle>
+                </svg>
+            </aside>
+        </section>
+
+        <section id="creations" class="creations section-wrap" aria-labelledby="creations-title">
+            <div class="section-heading">
+                <p class="eyebrow">OPEN A LITTLE SOMETHING</p>
+                <h2 id="creations-title">Mimi's magical<br><em>pocket-sized wonders.</em></h2>
+                <p>Pick a small bit of moon magic to take with you.</p>
+            </div>
+            <div class="creation-grid">
+                <article class="creation-card">
+                    <div class="creation-icon book-icon" aria-hidden="true"><span>✧</span></div>
+                    <p class="creation-type">FOR SLEEPY HEADS</p><h3>Starlight Storybook</h3>
+                    <p>A tiny bedtime story, folded between the stars.</p>
+                    <button class="project-open" type="button" data-dialog-target="storybook-dialog" aria-haspopup="dialog">Open the storybook <span aria-hidden="true">↗</span></button>
+                    <button class="small-button" type="button" id="storybook-toggle" aria-expanded="false" aria-controls="storybook-reveal"><span class="button-label">Turn a page</span> <span aria-hidden="true">↗</span></button>
+                    <div class="storybook-reveal" id="storybook-reveal" hidden>
+                        <p>One sleepy star fell into Mimi's paws. “You can rest here,” Mimi whispered. The star tucked itself beside the Moon, and together they made a little light for anyone finding their way home.</p>
+                    </div>
+                </article>
+                <article class="creation-card">
+                    <button class="music-box" id="music-box" type="button" aria-pressed="false" aria-label="Play the visual moonbeam music-box melody">
+                        <span class="music-stars" aria-hidden="true">✦ · ✧</span><span class="music-crank" aria-hidden="true"></span><span class="music-ballerina" aria-hidden="true">♬</span>
+                    </button>
+                    <p class="creation-type">LULLABY LAB · A QUIET LITTLE TUNE</p><h3>Moonbeam Music Box</h3>
+                    <p id="music-caption" aria-live="polite">Tap a note, or wind the key to let the stars dance.</p>
+                    <button class="project-open" type="button" data-dialog-target="music-dialog" aria-haspopup="dialog">Open the music box <span aria-hidden="true">↗</span></button>
+                    <div class="music-controls" role="group" aria-label="Moonbeam music notes">
+                        <button class="music-note" type="button" data-note="do" aria-label="Play the first moonbeam note">do</button>
+                        <button class="music-note" type="button" data-note="mi" aria-label="Play the second moonbeam note">mi</button>
+                        <button class="music-note" type="button" data-note="sol" aria-label="Play the third moonbeam note">sol</button>
+                        <button class="small-button" id="wind-box" type="button" aria-pressed="false"><span class="button-label">Wind the box</span> <span aria-hidden="true">↻</span></button>
+                    </div>
+                </article>
+                <article class="creation-card">
+                    <div class="orbs" role="group" aria-label="Choose one of Mimi's message orbs">
+                        <button class="orb orb-rose" type="button" data-message="You don't have to shine all the time. Rest is part of your magic." aria-label="Open the rose message orb">✧</button>
+                        <button class="orb orb-gold" type="button" data-message="Somewhere, someone is glad the universe made you." aria-label="Open the golden message orb">✦</button>
+                        <button class="orb orb-blue" type="button" data-message="Take one soft breath. This moment can be gentle." aria-label="Open the blue message orb">·</button>
+                    </div>
+                    <p class="creation-type">A NOTE JUST FOR YOU</p><h3>Floating Lights of Love</h3>
+                    <p id="orb-caption" aria-live="polite">Tap a little light. It has something to say.</p>
+                    <button class="project-open" type="button" data-dialog-target="orbs-dialog" aria-haspopup="dialog">Open the message orbs <span aria-hidden="true">↗</span></button>
+                </article>
+            </div>
+            <p class="creation-response" id="creation-response" role="status" aria-live="polite"></p>
+        </section>
+
+        <section id="dream-catch" class="dream-catch section-wrap" aria-labelledby="dream-catch-title">
+            <div class="section-heading">
+                <p class="eyebrow">A TINY MOON GAME</p>
+                <h2 id="dream-catch-title">Catch falling<br><em>dreams.</em></h2>
+                <p>Guide Mimi's little basket and gather the stars that drift down from the night.</p>
+            </div>
+            <div class="dream-catch-panel">
+                <div class="dream-catch-hud">
+                    <p class="dream-catch-stat">Score <span id="dream-catch-score">0</span></p>
+                    <p class="dream-catch-stat">Time <span id="dream-catch-time">30</span>s</p>
+                    <p class="dream-catch-status" id="dream-catch-status" role="status" aria-live="polite">Press start when you are ready to catch a few falling dreams.</p>
+                </div>
+                <div class="dream-field" id="dream-field" tabindex="0" role="application" aria-label="Catch falling dreams. Use left and right to move the basket.">
+                    <div class="dream-catcher" id="dream-catcher" aria-hidden="true">
+                        <span class="catcher-handle"></span>
+                        <span class="catcher-bowl"></span>
+                        <span class="catcher-star">✦</span>
+                    </div>
+                </div>
+                <div class="dream-catch-controls" role="group" aria-label="Move the dream basket">
+                    <button class="dream-move" id="dream-move-left" type="button" aria-label="Move basket left">← Left</button>
+                    <button class="dream-move" id="dream-move-right" type="button" aria-label="Move basket right">Right →</button>
+                </div>
+                <div class="dream-catch-actions">
+                    <button class="dialog-action" id="dream-catch-start" type="button">Start catching <span aria-hidden="true">✦</span></button>
+                    <button class="dialog-action dialog-action-ghost" id="dream-catch-restart" type="button" hidden>Play again <span aria-hidden="true">↻</span></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="guestbook" class="guestbook section-wrap" aria-labelledby="guestbook-title">
+            <div class="section-heading">
+                <p class="eyebrow">PERSISTENT MOON VAULT</p>
+                <h2 id="guestbook-title">The Real Dream<br><em>Guestbook.</em></h2>
+                <p>Whisper a dream, wish, or soft note for travelers beneath the stars. Entries are saved in the persistent moon database.</p>
+            </div>
+            <div class="guestbook-grid">
+                <div class="guestbook-form-pane">
+                    <form class="guestbook-form" id="guestbook-form" novalidate>
+                        <div class="form-group">
+                            <label for="guestbook-name" class="form-label">Your Name or Starlight Nickname</label>
+                            <input type="text" id="guestbook-name" class="form-input" maxlength="40" placeholder="e.g. Luna or Gentle Dreamer" required autocomplete="nickname">
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label" id="charm-label">Pick a Moon Charm</span>
+                            <div class="charm-picker" role="radiogroup" aria-labelledby="charm-label">
+                                <label class="charm-opt">
+                                    <input type="radio" name="guestbook-charm" value="star" checked>
+                                    <span class="charm-badge" title="Star Charm">✦ Star</span>
+                                </label>
+                                <label class="charm-opt">
+                                    <input type="radio" name="guestbook-charm" value="moon">
+                                    <span class="charm-badge" title="Crescent Moon Charm">☾ Moon</span>
+                                </label>
+                                <label class="charm-opt">
+                                    <input type="radio" name="guestbook-charm" value="sparkle">
+                                    <span class="charm-badge" title="Sparkle Charm">✧ Sparkle</span>
+                                </label>
+                                <label class="charm-opt">
+                                    <input type="radio" name="guestbook-charm" value="heart">
+                                    <span class="charm-badge" title="Heart Charm">♡ Heart</span>
+                                </label>
+                                <label class="charm-opt">
+                                    <input type="radio" name="guestbook-charm" value="cloud">
+                                    <span class="charm-badge" title="Cloud Charm">☁ Cloud</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label-row">
+                                <label for="guestbook-dream" class="form-label">Your Dream, Wish, or Whisper</label>
+                                <span class="char-counter" id="guestbook-char-count" aria-live="polite">280</span>
+                            </div>
+                            <textarea id="guestbook-dream" class="form-textarea" rows="4" maxlength="280" placeholder="May every restless mind find soft quiet tonight..." required></textarea>
+                        </div>
+                        <button type="submit" class="dialog-action" id="guestbook-submit">Send Dream to Mimi <span aria-hidden="true">✦</span></button>
+                        <div class="guestbook-status" id="guestbook-form-status" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+                <div class="guestbook-feed-pane">
+                    <div class="guestbook-feed-header">
+                        <h3>Recent Moonlit Whispers</h3>
+                        <span class="pulse-dot" aria-hidden="true"></span>
+                    </div>
+                    <div class="guestbook-loading" id="guestbook-loading" role="status" aria-live="polite">
+                        <span class="guestbook-spinner" aria-hidden="true">✦</span>
+                        <p>Listening for dreams across the universe...</p>
+                    </div>
+                    <div class="guestbook-error" id="guestbook-error" hidden>
+                        <p class="error-message">Could not connect to the moon vault right now.</p>
+                        <button type="button" class="dialog-action dialog-action-ghost" id="guestbook-retry">Retry Connection <span aria-hidden="true">↻</span></button>
+                    </div>
+                    <div class="guestbook-empty" id="guestbook-empty" hidden>
+                        <p>No dreams recorded yet tonight. Be the very first star to whisper into the moon vault!</p>
+                    </div>
+                    <div class="guestbook-list" id="guestbook-list" role="feed" aria-label="Shared dreams from visitors" aria-busy="false"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ending section-wrap" id="ending" aria-label="A little note from Mimi">
+            <span class="ending-star" aria-hidden="true">✦</span>
+            <p class="eyebrow">A NOTE TO KEEP IN YOUR POCKET</p>
+            <blockquote>“Even the smallest spark of starlight can brighten the vastest night.”</blockquote>
+            <p class="ending-signoff">With a little moonlight, <span>Mimi <span aria-hidden="true">♡</span></span></p>
+            <div class="mimi-chat" id="mimi-chat">
+                <p class="eyebrow">A WHISPER FOR MIMI · CHARACTER CHAT</p>
+                <div class="mimi-chat-box">
+                    <div class="mimi-chat-messages" id="mimi-chat-messages" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation with Mimi"></div>
+                    <p class="mimi-chat-status" id="mimi-chat-status" role="status" aria-live="polite" hidden></p>
+                    <form class="mimi-chat-form" id="mimi-chat-form">
+                        <label for="mimi-chat-input" class="visually-hidden">Whisper something to Mimi</label>
+                        <input type="text" id="mimi-chat-input" class="mimi-chat-input" placeholder="Whisper to Mimi under the stars..." maxlength="200" autocomplete="off">
+                        <button type="submit" class="dialog-action mimi-chat-send" id="mimi-chat-send" aria-label="Send whisper"><span>Send</span> <span aria-hidden="true">✦</span></button>
+                    </form>
+                </div>
+                <div class="mimi-chat-choices" id="mimi-chat-choices" role="group" aria-label="Quick whispers for Mimi">
+                    <button type="button" data-chat="lonely">I feel a little lonely</button>
+                    <button type="button" data-chat="tired">I am sleepy</button>
+                    <button type="button" data-chat="story">Tell me a tiny story</button>
+                    <button type="button" data-chat="who">Who are you, Mimi?</button>
+                    <button type="button" data-chat="wish">Can I make a wish?</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="secret-experience" id="secret-experience" hidden aria-hidden="true">
+        <div class="secret-awakening" aria-hidden="true"></div>
+        <div class="secret-letter-panel" role="dialog" aria-modal="false" aria-labelledby="secret-title" aria-describedby="secret-status" tabindex="-1">
+            <button class="secret-close" id="secret-close" type="button" aria-label="Close Mimi's secret">×</button>
+            <div class="secret-moon-scene" aria-hidden="true">
+                <span class="secret-moon"></span>
+                <span class="secret-cloud secret-cloud-left"></span>
+                <span class="secret-cloud secret-cloud-right"></span>
+                <span class="secret-scene-star secret-scene-star-one">✦</span>
+                <span class="secret-scene-star secret-scene-star-two">✧</span>
+                <span class="secret-scene-star secret-scene-star-three">·</span>
+            </div>
+            <p class="eyebrow">A SECRET FROM THE HEART OF THE MOON</p>
+            <h2 id="secret-title">Psst… Mimi has a little secret for you!</h2>
+            <p class="secret-prompt" id="secret-status" aria-live="polite">Follow the glowing stars to discover Mimi's letter.</p>
+            <div class="constellation-map" id="constellation-map" role="group" aria-label="Activate the three constellation stars in order">
+                <svg class="constellation-lines" viewBox="0 0 240 120" aria-hidden="true">
+                    <path d="M34 83 L120 31"></path>
+                    <path d="M120 31 L206 83"></path>
+                </svg>
+                <button class="constellation-star is-next" type="button" data-star="0" aria-label="Constellation star 1 of 3">✦</button>
+                <button class="constellation-star" type="button" data-star="1" aria-label="Constellation star 2 of 3" disabled>✦</button>
+                <button class="constellation-star" type="button" data-star="2" aria-label="Constellation star 3 of 3" disabled>✦</button>
+            </div>
+            <p class="secret-progress" id="secret-progress" aria-live="polite">Star 1 of 3 is waiting for you</p>
+            <div class="secret-letter" id="secret-letter" hidden>
+                <p class="eyebrow">A LETTER FROM MIMI</p>
+                <p>“You found a little secret. Even the smallest light can make someone's universe brighter.”</p>
+            </div>
+            <div class="secret-actions">
+                <button class="secret-restart" id="secret-restart" type="button">Discover Again <span aria-hidden="true">↻</span></button>
+                <button class="secret-dismiss" id="secret-dismiss" type="button">Close for now</button>
+            </div>
+        </div>
+    </div>
+
+    <dialog class="project-dialog" id="storybook-dialog" aria-labelledby="storybook-dialog-title" aria-describedby="storybook-dialog-subtitle">
+        <div class="dialog-shell">
+            <button class="dialog-close" type="button" aria-label="Close Starlight Storybook">×</button>
+            <p class="eyebrow">FOR SLEEPY HEADS</p>
+            <h2 id="storybook-dialog-title">Starlight Storybook</h2>
+            <p class="dialog-subtitle" id="storybook-dialog-subtitle">A tiny bedtime story, folded between the stars.</p>
+            <div class="storybook-stage" id="storybook-stage">
+                <div class="storybook-book" id="storybook-book">
+                    <div class="storybook-spine" aria-hidden="true"></div>
+                    <div class="storybook-spread">
+                        <div class="dialog-page" id="storybook-page" aria-live="polite">One sleepy star fell into Mimi's paws. “You can rest here,” Mimi whispered. The star tucked itself beside the Moon, and together they made a little light for anyone finding their way home.</div>
+                        <div class="storybook-turning" id="storybook-turning" aria-hidden="true">
+                            <div class="storybook-turning-face storybook-turning-front" id="storybook-turning-front"></div>
+                            <div class="storybook-turning-face storybook-turning-back" id="storybook-turning-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="storybook-folio" id="storybook-folio">Page 1 of 3</p>
+                <p class="dialog-hint">Swipe the page, use the arrow keys, or turn with the buttons.</p>
+            </div>
+            <div class="storybook-nav">
+                <button class="dialog-action dialog-action-ghost" id="storybook-prev-button" type="button">Previous page <span aria-hidden="true">↙</span></button>
+                <button class="dialog-action" id="storybook-page-button" type="button">Turn a page <span aria-hidden="true">↗</span></button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="project-dialog" id="music-dialog" aria-labelledby="music-dialog-title" aria-describedby="music-dialog-subtitle">
+        <div class="dialog-shell">
+            <button class="dialog-close" type="button" aria-label="Close Moonbeam Music Box">×</button>
+            <p class="eyebrow">LULLABY LAB · A QUIET LITTLE TUNE</p>
+            <h2 id="music-dialog-title">Moonbeam Music Box</h2>
+            <p class="dialog-subtitle" id="music-dialog-subtitle">A gentle moonbeam melody is dancing through the room.</p>
+            <div class="dialog-music-notes" role="group" aria-label="Choose a starting note for the melody">
+                <button class="music-note dialog-note" type="button" data-frequency="523.25" aria-label="Play melody starting on do">do</button>
+                <button class="music-note dialog-note" type="button" data-frequency="659.25" aria-label="Play melody starting on mi">mi</button>
+                <button class="music-note dialog-note" type="button" data-frequency="783.99" aria-label="Play melody starting on sol">sol</button>
+            </div>
+            <button class="dialog-action" id="music-melody-button" type="button">Play the melody <span aria-hidden="true">♫</span></button>
+            <p class="dialog-hint" id="music-dialog-status" aria-live="polite">Enable Sound On in the page header to hear Mimi's tune.</p>
+        </div>
+    </dialog>
+
+    <dialog class="project-dialog" id="orbs-dialog" aria-labelledby="orbs-dialog-title" aria-describedby="orbs-dialog-subtitle">
+        <div class="dialog-shell">
+            <button class="dialog-close" type="button" aria-label="Close Floating Lights of Love">×</button>
+            <p class="eyebrow">A NOTE JUST FOR YOU</p>
+            <h2 id="orbs-dialog-title">Floating Lights of Love</h2>
+            <p class="dialog-subtitle" id="orbs-dialog-subtitle">Take one soft breath. This moment can be gentle.</p>
+            <div class="dialog-orbs" role="group" aria-label="Choose a comforting message orb">
+                <button class="orb orb-rose" type="button" data-message="You don't have to shine all the time. Rest is part of your magic." aria-label="Open the rose message orb">✧</button>
+                <button class="orb orb-gold" type="button" data-message="Somewhere, someone is glad the universe made you." aria-label="Open the golden message orb">✦</button>
+                <button class="orb orb-blue" type="button" data-message="Take one soft breath. This moment can be gentle." aria-label="Open the blue message orb">·</button>
+            </div>
+            <p class="dialog-message" id="dialog-orb-message" aria-live="polite">Choose a floating light to reveal a message.</p>
+        </div>
+    </dialog>
+
+    <dialog class="project-dialog name-dialog" id="name-dialog" aria-labelledby="name-dialog-title" aria-describedby="name-dialog-subtitle">
+        <div class="dialog-shell">
+            <button class="dialog-close" type="button" aria-label="Close name dialog">×</button>
+            <p class="eyebrow">VISITOR MEMORY</p>
+            <h2 id="name-dialog-title">What should Mimi call you?</h2>
+            <p class="dialog-subtitle" id="name-dialog-subtitle">Mimi will greet you warmly whenever you return to the Moon.</p>
+            <form class="name-form" id="name-form">
+                <label for="preferred-name-input" class="form-label">Your Preferred Name or Starlight Nickname</label>
+                <input type="text" id="preferred-name-input" class="form-input" maxlength="30" placeholder="e.g. Luna, Sam, or Gentle Star" autocomplete="nickname">
+                <div class="dialog-nav">
+                    <button type="submit" class="dialog-action">Save to Memory <span aria-hidden="true">✦</span></button>
+                </div>
+                <p class="dialog-hint">Saved securely in your browser's private storage. Mimi never tracks or shares your data.</p>
+            </form>
+        </div>
+    </dialog>
+
+    <footer>
+        <a class="footer-home" href="#home">☾ Back to the nook</a>
+        <div class="footer-center">
+            <span>Made with <span aria-label="love">♡</span> under the moonlight</span>
+            <p class="dream-odometer" id="dream-odometer">
+                <span class="footer-stamp">DREAMS DELIVERED ON THIS MOON</span>
+                <span class="odometer" id="dream-count" aria-live="polite">00001</span>
+            </p>
+        </div>
+        <div class="footer-end">
+            <button class="chaos-toggle" id="chaos-toggle" type="button" aria-pressed="false" aria-label="Enter playful Chaos Mode">Chaos Mode</button>
+            <span class="footer-stamp">A TINY INTERNET PLACE · EST. TONIGHT · Original artwork for Mimi's Moon</span>
+        </div>
+    </footer>
+    <button class="chaos-exit" id="chaos-exit" type="button" hidden aria-label="Exit Chaos Mode">Settle the stars</button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="mimi-memory.js"></script>
+    <script type="module" src="mimi-3d.js"></script>
+    <script src="mimi-guestbook.js"></script>
+    <script src="mimi-chat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

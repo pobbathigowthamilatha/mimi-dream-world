@@ -1,0 +1,25 @@
+{
+  "name": "mimi-dream-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-backend.js",
+    "test:e2e": "node test-e2e.js",
+    "test:mobile": "node test-mobile.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

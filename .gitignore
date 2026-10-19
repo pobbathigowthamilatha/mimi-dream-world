@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+package-lock.json.tmp
+
+# Logs & temp files
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# SQLite WAL and journal files
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor files
+.vscode/
+.idea/
+
+# OS artifacts
+Desktop.ini
