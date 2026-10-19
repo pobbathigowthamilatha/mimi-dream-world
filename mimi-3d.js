@@ -209,27 +209,29 @@
         faceGroup = new THREE.Group();
         headGroup.add(faceGroup);
 
-        // 3. Floppy Bunny Ears (attached to headGroup)
+        // 3. Floppy Bunny Ears (attached to headGroup, draping softly downward)
         function createEar(isRight) {
             const earGroup = new THREE.Group();
 
-            const earGeo = new THREE.SphereGeometry(0.36, 24, 20);
-            earGeo.scale(0.72, 2.1, 0.45);
+            const earGeo = new THREE.SphereGeometry(0.35, 24, 20);
+            earGeo.scale(0.72, 2.05, 0.42);
             const earMesh = new THREE.Mesh(earGeo, puffMaterial);
-            earMesh.position.y = 0.55;
+            // Pivot from ear base down
+            earMesh.position.y = -0.55;
             earMesh.castShadow = true;
             earGroup.add(earMesh);
 
-            const innerGeo = new THREE.SphereGeometry(0.28, 20, 16);
-            innerGeo.scale(0.55, 1.7, 0.22);
+            const innerGeo = new THREE.SphereGeometry(0.27, 20, 16);
+            innerGeo.scale(0.55, 1.65, 0.22);
             const innerMesh = new THREE.Mesh(innerGeo, innerEarMaterial);
-            innerMesh.position.set(0, 0.55, 0.12);
+            innerMesh.position.set(0, -0.55, 0.12);
             earGroup.add(innerMesh);
 
             const sign = isRight ? 1 : -1;
-            earGroup.position.set(sign * 0.68, 0.62, -0.05);
-            earGroup.rotation.z = sign * -0.62;
-            earGroup.rotation.x = -0.16;
+            // Attached at upper sides of head, drooping downward alongside cheeks
+            earGroup.position.set(sign * 0.78, 0.42, -0.05);
+            earGroup.rotation.z = sign * -0.22;
+            earGroup.rotation.x = -0.12;
             earGroup.rotation.y = sign * 0.18;
             return earGroup;
         }
@@ -366,15 +368,15 @@
         // 9. Cute Front Arms/Paws & Small Feet
         function createArm(isRight) {
             const armGroup = new THREE.Group();
-            const armGeo = new THREE.SphereGeometry(0.18, 18, 16);
-            armGeo.scale(0.8, 1.25, 0.85);
+            const armGeo = new THREE.SphereGeometry(0.19, 20, 16);
+            armGeo.scale(0.85, 0.75, 1.25);
             const armMesh = new THREE.Mesh(armGeo, puffMaterial);
             armMesh.castShadow = true;
             armGroup.add(armMesh);
 
             const sign = isRight ? 1 : -1;
-            armGroup.position.set(sign * 0.42, 0.72, 0.68);
-            armGroup.rotation.set(0.35, sign * -0.28, sign * -0.18);
+            armGroup.position.set(sign * 0.28, 0.58, 0.88);
+            armGroup.rotation.set(0.25, sign * -0.32, sign * -0.15);
             return armGroup;
         }
 
@@ -385,13 +387,13 @@
 
         function createFoot(isRight) {
             const footGeo = new THREE.SphereGeometry(0.22, 18, 16);
-            footGeo.scale(0.9, 0.6, 1.35);
+            footGeo.scale(0.88, 0.58, 1.35);
             const footMesh = new THREE.Mesh(footGeo, puffMaterial);
             footMesh.castShadow = true;
 
             const sign = isRight ? 1 : -1;
-            footMesh.position.set(sign * 0.42, 0.16, 0.52);
-            footMesh.rotation.set(0.08, sign * 0.18, 0);
+            footMesh.position.set(sign * 0.36, 0.16, 0.68);
+            footMesh.rotation.set(0.08, sign * 0.14, 0);
             return footMesh;
         }
 
@@ -730,8 +732,8 @@
             // Floppy ears sway with gentle soft-body inertia
             if (leftEar && rightEar) {
                 const earSway = Math.cos(breathCycle) * 0.045;
-                leftEar.rotation.z = -0.62 + earSway;
-                rightEar.rotation.z = 0.62 - earSway;
+                leftEar.rotation.z = -0.22 + earSway;
+                rightEar.rotation.z = 0.22 - earSway;
             }
 
             // Fluffy tail wiggles gently
@@ -815,8 +817,8 @@
 
                         // Ears flap back with delight
                         if (leftEar && rightEar) {
-                            leftEar.rotation.z = -0.62 - jumpHeight * 0.65;
-                            rightEar.rotation.z = 0.62 + jumpHeight * 0.65;
+                            leftEar.rotation.z = -0.22 - jumpHeight * 0.5;
+                            rightEar.rotation.z = 0.22 + jumpHeight * 0.5;
                         }
                         // Excited tail wag
                         if (tailMesh) {
@@ -835,8 +837,8 @@
                         mimiBodyGroup.position.y = -settle * 0.1;
                         mimiBodyGroup.scale.set(1 + settle * 0.08, 1 - settle * 0.1, 1 + settle * 0.08);
                         if (leftEar && rightEar) {
-                            leftEar.rotation.z = -0.62 + settle * 0.2;
-                            rightEar.rotation.z = 0.62 - settle * 0.2;
+                            leftEar.rotation.z = -0.22 + settle * 0.15;
+                            rightEar.rotation.z = 0.22 - settle * 0.15;
                         }
                     }
                 } else {
@@ -889,9 +891,9 @@
             const width = container.clientWidth || 600;
             const height = container.clientHeight || 420;
 
-            camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-            camera.position.set(0, 1.25, 4.6);
-            camera.lookAt(0, 0.9, 0);
+            camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+            camera.position.set(0, 1.18, 5.05);
+            camera.lookAt(0, 1.05, 0);
 
             renderer = new THREE.WebGLRenderer({
                 canvas: canvas,
@@ -902,7 +904,7 @@
             renderer.setSize(width, height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.shadowMap.type = THREE.PCFShadowMap;
 
             setupLights();
             buildMimiModel();
